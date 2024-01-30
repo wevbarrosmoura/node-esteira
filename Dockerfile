@@ -1,15 +1,31 @@
-FROM node:latest
-RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.9.2-amd64.deb
-RUN dpkg -i filebeat-8.9.2-amd64.deb
+FROM node:20
 
-COPY filebeat.yml /etc/filebeat/filebeat.yml
+#VOLUME ["/var/lib/docker/containers", "/var/run/docker.sock"]
+
+LABEL logging="promtail"
+LABEL logging_jobname="local-loki"
+
+COPY promtail-config.yaml /etc/promtail/promtail-config.yaml
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
-WORKDIR /app
-ADD package*.json ./
-RUN npm install
-ADD . .
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -LO https://github.com/grafana/loki/releases/download/v2.7.0/promtail-linux-amd64.zip && \
+    unzip promtail-linux-amd64.zip && \
+    mv promtail-linux-amd64 /usr/local/bin/promtail && \
+    rm promtail-linux-amd64.zip && \
+    apt-get remove -y curl && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+# CMD ["promtail", "-config.file=/etc/promtail/promtail-config.yaml"]
 
+ WORKDIR /app
+ ADD package*.json ./
+ RUN npm install
+ ADD . .
+
+ #RUN npm run build
+ #CMD ["npm", "start"]
+ RUN chmod +x entrypoint.sh
+ ENTRYPOINT ["/entrypoint.sh"]

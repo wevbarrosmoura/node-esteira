@@ -1,6 +1,3 @@
 #!/bin/bash
-
-filebeat modules enable nginx
-filebeat setup
-service filebeat start
-node webserver.js
+npm start
+exec promtail -config.file=/etc/promtail/promtail-config.yaml &
