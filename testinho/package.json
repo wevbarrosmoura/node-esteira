@@ -1,0 +1,12 @@
+{
+    "name": "testinho",
+    "version": "1.0.0",
+    "description": "Example project",
+    "dependencies": {
+        "winston": "^3.3.3",
+        "winston-loki": "^1.0.0"
+    },
+    "scripts": {
+        "start": "node index.js"
+    }
+}
