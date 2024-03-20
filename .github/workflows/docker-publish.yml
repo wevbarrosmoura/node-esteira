@@ -21,11 +21,18 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+        
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: nestesteira:latest
       
-      - name: 'Build Inventory Image'
-        run: |
-              docker build . --tag ghcr.io/wevbarrosmoura/nestesteira:latest
-              docker push ghcr.io/wevbarrosmoura/nestesteira:latest
+      # - name: 'Build Inventory Image'
+      #   run: |
+      #         docker build . --tag ghcr.io/wevbarrosmoura/nestesteira:latest
+      #         docker push ghcr.io/wevbarrosmoura/nestesteira:latest
           
 
       # - name: Run Trivy vulnerability scanner
