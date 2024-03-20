@@ -2,11 +2,11 @@ FROM node:20
 
 #VOLUME ["/var/lib/docker/containers", "/var/run/docker.sock"]
 
-LABEL logging="promtail"
-LABEL logging_jobname="local-loki"
+# LABEL logging="promtail"
+# LABEL logging_jobname="local-loki"
 
-COPY promtail-config.yaml /etc/promtail/promtail-config.yaml
-COPY entrypoint.sh /entrypoint.sh
+# COPY promtail-config.yaml /etc/promtail/promtail-config.yaml
+# COPY entrypoint.sh /entrypoint.sh
 
 RUN apt-get update && \
     apt-get install -y curl && \
